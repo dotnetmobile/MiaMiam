@@ -634,14 +634,14 @@ a.skip {
     display: inline-block;
     font-size: 14px;
     line-height: 17px;
-    /*padding: 3px 8px 5px;*/
-    padding: 7px 8px 4px;
+    padding: 6px 6px 3px;
+    /*padding: 7px 8px 4px;*/
     text-align: center;
     text-decoration: none;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
     vertical-align: middle;
-    height: 22px;
-    width: 15px;
+    height: 24px;
+    width: 10px;
     
 }
 
@@ -670,10 +670,7 @@ a.skip {
     text-decoration: none;
 }
 
-.icon-search {
-    background-position: -48px 0;
-}
-
+/*
 .inputSearch input {
     background-color: #F7F7F5;
     background-image: -moz-linear-gradient(center top , #F6F6F4, #F9F9F7);
@@ -684,7 +681,36 @@ a.skip {
     outline: 0 none;
     padding: 3px 5px;
     top: 0;
-    height: 14px;
+    height: 18px;
     width: 60px;
 }
+*/
 
+/*------------*/
+#header #quickSearch .inputSearch {
+    height: 40px;
+    overflow: hidden;
+    position: absolute;
+    right: 31px;
+    width: 60px;
+}
+#header #quickSearch .inputSearch input {
+    background-color: #F7F7F5;
+    background-image: -moz-linear-gradient(center top , #F6F6F4, #F9F9F7);
+    background-repeat: repeat-x;
+    border-radius: 3px 0 0 3px;
+    font-size: 13px;
+    margin: 0;
+    outline: 0 none;
+    padding: 3px 5px;
+    position: absolute;
+    top: 0;
+    width: 60px;
+}
+#header #quickSearch .inputSearch input:focus {
+    background-color: #FFFFFF;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #FFFFFF);
+    background-repeat: repeat-x;
+    border-color: #BEBEBC;
+    outline: medium none;
+}
