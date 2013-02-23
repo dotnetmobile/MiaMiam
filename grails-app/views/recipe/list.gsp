@@ -19,7 +19,7 @@
 			    <div id="quickSearch">
 			    	<g:form action="search" >
 			    		<div class="inputSearch">  
- 				        	<input type="text" name="q" placeholder="Trouver" value="${params.q}"/><button type="submit" title="${message(code: 'recipe.search.label')}" class="icon-search btn gray" />
+ 				        	<input type="text" name="q" style="width:120px;" placeholder="Rechercher" value="${params.q}"/><button type="submit" title="${message(code: 'recipe.search.label')}" class="icon-search btn gray" />
 		           		</div>	
 			        </g:form>
 			    </div>				
