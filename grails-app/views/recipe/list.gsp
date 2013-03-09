@@ -22,7 +22,10 @@
  				        	<input type="text" name="q" style="width:120px;" placeholder="Rechercher" value="${params.q}"/><button type="submit" title="${message(code: 'recipe.search.label')}" class="icon-search btn gray" />
 		           		</div>	
 			        </g:form>
-			    </div>				
+			        <g:form action="generatePdf">
+			        	<button type="submit" title="PDF"/>
+			        </g:form>
+			    </div>
 			</ul>
 		</div>
 		<div id="list-recipe" class="content scaffold-list roundedBorder" role="main">

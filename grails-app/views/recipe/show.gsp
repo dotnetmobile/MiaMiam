@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="main"/>
 		<g:set var="entityName" value="${message(code: 'recipe.label', default: 'Recipe')}" />
 		<g:set var="recipeName" value="${recipeInstance?.name}"/>
 		<title><g:message code="recipe.show.label" args="[entityName]" /></title>
@@ -19,6 +19,7 @@
 				</sec:ifAllGranted>
 			</ul>
 		</div>
+		
 		<div id="show-recipe" class="content scaffold-show" role="main">
 			<h1><g:message code="recipe.show.label" args="[recipeName]" /></h1>
 			<g:if test="${flash.message}">

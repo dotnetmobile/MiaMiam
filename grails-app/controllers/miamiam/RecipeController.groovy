@@ -1,6 +1,16 @@
 package miamiam
 
+import com.itextpdf.text.Document
+import com.itextpdf.text.Font
+import com.itextpdf.text.Paragraph
+import com.itextpdf.text.pdf.PdfWriter
+import com.itextpdf.text.pdf.draw.LineSeparator
+import com.itextpdf.text.Chunk
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.Image;
+
 import org.springframework.dao.DataIntegrityViolationException
+
 
 class RecipeController {
 
@@ -9,6 +19,8 @@ class RecipeController {
 	def searchableService // inject the service
 	
 	def search () {
+		generatePdf()
+		
 		def query = params.q
 		
 		if(query) {
@@ -130,4 +142,68 @@ class RecipeController {
 		}
 
 	}
+	
+	def generatePdf() {
+		// step 1
+		def document = new Document()
+		println("Document Created")
+		
+		// step 2
+		PdfWriter.getInstance(document, new FileOutputStream("Micheldocument.pdf"))
+		println("PdfWriter Created")
+		
+		// step 3
+		document.open()
+		println("Document Opened")
+		
+		def allRecipes = Recipe.list(sort:'name')
+		
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		Font font18 = new Font(bf, 18);
+		Font font12 = new Font(bf, 12);
+		
+		// step 4
+		for (Recipe iterator:allRecipes) {
+			document.newPage()
+			
+			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
+			document.add(paragraph1)
+			
+			Paragraph paragraph2 = new Paragraph("", font12)
+			paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Categorie: " + iterator.category.name)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Ingredients:") 
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(iterator.ingredient)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Description:")
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(iterator.description)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			
+			if (iterator.photoSteps.size()>0) {
+				paragraph2.add("Photo:")
+				Image img = Image.getInstance(256, 1, 3, 8, iterator.photoSteps.toList().get(0));
+				img.scaleAbsolute(256, 50);
+				
+				paragraph2.add(img)
+				paragraph2.add(Chunk.NEWLINE)
+				paragraph2.add(Chunk.NEWLINE)
+			}
+			document.add(paragraph2)
+		}
+		
+		// step 5
+		document.close()
+		println("Document Closed")
+		
+	}
+
 }

@@ -35,6 +35,14 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
         runtime 'mysql:mysql-connector-java:5.1.18'
+
+		build "com.itextpdf.text.Document:itextpdf:5.4.0"
+		build "com.itextpdf.text.Paragraph:itextpdf:5.4.0"
+		build "com.itextpdf.text.pdf.PdfWriter:itextpdf:5.4.0"
+		
+		runtime 'com.itextpdf.text.Document:itextpdf:5.4.0'
+		runtime 'com.itextpdf.text.Paragraph:itextpdf:5.4.0'
+		runtime 'com.itextpdf.text.pdf.PdfWriter:itextpdf:5.4.0'
     }
 
     plugins {
@@ -48,8 +56,9 @@ grails.project.dependency.resolution = {
         //runtime ":yui-minify-resources:0.1.4"
 
         build ":tomcat:$grailsVersion"
+		
 
-        runtime ":database-migration:1.1"
+		runtime ":database-migration:1.1"
 
         compile ':cache:1.0.0'
     }
