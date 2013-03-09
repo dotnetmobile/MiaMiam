@@ -19,7 +19,6 @@ class RecipeController {
 	def searchableService // inject the service
 	
 	def search () {
-		generatePdf()
 		
 		def query = params.q
 		
@@ -189,9 +188,11 @@ class RecipeController {
 			paragraph2.add(Chunk.NEWLINE)
 			
 			if (iterator.photoSteps.size()>0) {
-				paragraph2.add("Photo:")
-				Image img = Image.getInstance(256, 1, 3, 8, iterator.photoSteps.toList().get(0));
-				img.scaleAbsolute(256, 50);
+				//paragraph2.add("Photo:")
+				PhotoStep step = iterator.photoSteps.toList().get(0)
+				
+				Image img = Image.getInstance(step.photo);
+				img.scaleAbsolute(250, 180);
 				
 				paragraph2.add(img)
 				paragraph2.add(Chunk.NEWLINE)
@@ -203,6 +204,8 @@ class RecipeController {
 		// step 5
 		document.close()
 		println("Document Closed")
+		
+		redirect(action: "list", params: params)
 		
 	}
 

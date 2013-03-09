@@ -15,15 +15,13 @@
 				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
 				<sec:ifAllGranted roles="ROLE_ADMIN">
 					<li><g:link class="create" action="create"><g:message code="recipe.new.label" args="[entityName]" /></g:link></li>
+					<li><g:form controller="recipe" action="generatePdf"><g:submitButton name="genPDF" value="PDF"/></g:form></li>
 				</sec:ifAllGranted>
 			    <div id="quickSearch">
 			    	<g:form action="search" >
 			    		<div class="inputSearch">  
  				        	<input type="text" name="q" style="width:120px;" placeholder="Rechercher" value="${params.q}"/><button type="submit" title="${message(code: 'recipe.search.label')}" class="icon-search btn gray" />
 		           		</div>	
-			        </g:form>
-			        <g:form action="generatePdf">
-			        	<button type="submit" title="PDF"/>
 			        </g:form>
 			    </div>
 			</ul>
