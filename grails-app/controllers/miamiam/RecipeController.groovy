@@ -142,13 +142,14 @@ class RecipeController {
 
 	}
 	
-	def generatePdf() {
+	def generatePdf_Original() {
 		// step 1
 		def document = new Document()
 		println("Document Created")
 		
 		// step 2
-		PdfWriter.getInstance(document, new FileOutputStream("Micheldocument.pdf"))
+		def exportRecipes = new FileOutputStream("Micheldocument.pdf")
+		PdfWriter.getInstance(document, exportRecipes)
 		println("PdfWriter Created")
 		
 		// step 3
@@ -204,6 +205,108 @@ class RecipeController {
 		// step 5
 		document.close()
 		println("Document Closed")
+		
+
+		// force download
+		def fileName = "Micheldocument.pdf"
+/*		
+		response.setContentType("application/octet-stream")
+		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\"" 
+		response.outputStream <<  exportRecipes
+		response.outputStream.flush()
+
+		
+		def file = new File(params.fileDir)
+*/		
+		
+		def file = new File("/Users/michel_petrovic/Desktop/features.pdf")
+		response.setHeader("Content-Type", "application/octet-stream;")
+		response.setHeader("Content-Disposition", "attachment;filename=\"features.pdf\"")
+		response.setHeader("Content-Length", "${file.size()}")
+ 
+	   response.outputStream << file.text.bytes
+		return true
+
+		
+		redirect(action: "list", params: params)
+		
+	}
+
+	def generatePdf() {
+		// step 1
+		def document = new Document()
+		println("Document Created")
+		
+		// step 2
+		def exportRecipes = new ByteArrayOutputStream()
+		PdfWriter.getInstance(document, exportRecipes)
+		println("PdfWriter Created")
+		
+		// step 3
+		document.open()
+		println("Document Opened")
+		
+		def allRecipes = Recipe.list(sort:'name')
+		
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		Font font18 = new Font(bf, 18);
+		Font font12 = new Font(bf, 12);
+		
+		// step 4
+		for (Recipe iterator:allRecipes) {
+			document.newPage()
+			
+			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
+			document.add(paragraph1)
+			
+			Paragraph paragraph2 = new Paragraph("", font12)
+			paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Categorie: " + iterator.category.name)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Ingredients:")
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(iterator.ingredient)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add("Description:")
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(iterator.description)
+			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)
+			
+			if (iterator.photoSteps.size()>0) {
+				//paragraph2.add("Photo:")
+				PhotoStep step = iterator.photoSteps.toList().get(0)
+				
+				Image img = Image.getInstance(step.photo);
+				img.scaleAbsolute(250, 180);
+				
+				paragraph2.add(img)
+				paragraph2.add(Chunk.NEWLINE)
+				paragraph2.add(Chunk.NEWLINE)
+			}
+			document.add(paragraph2)
+		}
+		
+		// step 5
+		document.close()
+		println("Document Closed")
+		
+
+		// force download
+		def fileName = "PiqueAssiette.pdf"
+
+		response.setContentType("application/octet-stream")
+		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\""
+		response.outputStream <<  exportRecipes
+		response.outputStream.flush()
+		
+		return true
+
 		
 		redirect(action: "list", params: params)
 		
