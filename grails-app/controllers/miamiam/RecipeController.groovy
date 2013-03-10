@@ -1,13 +1,17 @@
 package miamiam
 
 import com.itextpdf.text.Document
+import com.itextpdf.text.PageSize
 import com.itextpdf.text.Font
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
 import com.itextpdf.text.pdf.draw.LineSeparator
+import com.itextpdf.text.pdf.fonts.otf.TableHeader
 import com.itextpdf.text.Chunk
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -142,9 +146,10 @@ class RecipeController {
 
 	}
 	
+	
 	def generatePdf() {
 		// step 1
-		def document = new Document()
+		def document = new Document(PageSize.A4, 36, 36, 54, 36)
 		document.addAuthor("Slavica Petrovic")
 		document.addCreator("Slavica Petrovic")
 		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
@@ -153,9 +158,12 @@ class RecipeController {
 		
 		// step 2
 		def exportRecipes = new ByteArrayOutputStream()
-		PdfWriter.getInstance(document, exportRecipes)
+		PdfWriter writer = PdfWriter.getInstance(document, exportRecipes)
 		println("PdfWriter Created")
-		
+/*		
+		TableHeader event = new TableHeader();
+		writer.setPageEvent(event);
+*/		
 		// step 3
 		document.open()
 		println("Document Opened")
@@ -169,6 +177,7 @@ class RecipeController {
 		// step 4
 		for (Recipe iterator:allRecipes) {
 			document.newPage()
+			//event..setHeader("Liste des recettes en provenance de www.piqueassiette.com")
 			
 			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
 			document.add(paragraph1)
@@ -185,6 +194,7 @@ class RecipeController {
 			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add(iterator.ingredient)
+			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add("Description:")
 			paragraph2.add(Chunk.NEWLINE)
@@ -218,7 +228,7 @@ class RecipeController {
 		//response.setContentType("application/octet-stream")
 		response.setContentType("application/pdf")
 		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\""
-		response.outputStream <<  exportRecipes
+		response.outputStream <<  exportRecipes.toByteArray()
 		response.outputStream.flush()
 
 
