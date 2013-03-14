@@ -59,8 +59,6 @@ class PdfGenerator {
 		for (Recipe iterator:allRecipes) {
 			
 			document.newPage()
-
-			//event..setHeader("Liste des recettes en provenance de www.piqueassiette.com")
 			
 			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
 			document.add(paragraph1)
@@ -87,15 +85,13 @@ class PdfGenerator {
 			paragraph2.add(Chunk.NEWLINE)
 			
 			if (iterator.photoSteps.size()>0) {
-				//paragraph2.add("Photo:")
-				PhotoStep step = iterator.photoSteps.toList().get(0)
-				
-				Image img = Image.getInstance(step.photo);
-				img.scaleAbsolute(250, 180);
-				
-				paragraph2.add(img)
-				paragraph2.add(Chunk.NEWLINE)
-				paragraph2.add(Chunk.NEWLINE)
+				iterator.photoSteps.each {iteratorPhoto ->
+					Image img = Image.getInstance(iteratorPhoto.photo);
+					img.scaleAbsolute(250, 180);
+					
+					paragraph2.add(img)
+					paragraph2.add(Chunk.NEWLINE)
+				}
 			}
 			document.add(paragraph2)
 		}
@@ -121,7 +117,8 @@ class PdfGenerator {
          *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
          */
         public void onOpenDocument(PdfWriter writer, Document document) {
-            header[0] = new Phrase("www.piqueassiette.com");
+            header[0] = new Phrase("www.piqueassiette.com")
+			header[1] = new Phrase("www.piqueassiette.com")
         }
  
         /**
@@ -154,30 +151,8 @@ class PdfGenerator {
         public void onEndPage(PdfWriter writer, Document document) {
             Rectangle rect = writer.getBoxSize("art")
 			
-            switch(writer.getPageNumber() % 2) {
-/*            case 0:
-                ColumnText.showTextAligned(writer.getDirectContent(),
-                        Element.ALIGN_RIGHT, header[0],
-                        rect.getRight(), rect.getTop(), 0);
-                break;
-            case 1:
-                ColumnText.showTextAligned(writer.getDirectContent(),
-                        Element.ALIGN_LEFT, header[1],
-                        rect.getLeft(), rect.getTop(), 0);
-                break;
-*/                
-				case 0:
-				ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, header[0], rect.right, rect.top, 0)
-				break;
-			case 1:
-				ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, header[1], rect.left, rect.top, 0) 
-				break;
-            }
-/*			
-            ColumnText.showTextAligned(writer.getDirectContent(),
-                    Element.ALIGN_CENTER, new Phrase(String.format("page %d", pagenumber)),
-                    (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 18, 0);
-*/
+			ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, header[0], rect.right, rect.top, 0)
+
 			float fX = (rect.left + rect.right) / 2
 			float fY = rect.bottom - 18
 			
