@@ -1,29 +1,34 @@
 package miamiam
 
+import com.itextpdf.awt.geom.Rectangle
 import com.itextpdf.text.Document
-import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.DocumentException
 import com.itextpdf.text.PageSize
 import com.itextpdf.text.Font
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.Chunk
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.PdfWriter
+import com.itextpdf.text.Rectangle
+import com.itextpdf.text.pdf.BaseFont
+import com.itextpdf.text.BaseColor
+import com.itextpdf.text.Image
+import com.itextpdf.text.Phrase
+import com.itextpdf.text.Element
+import com.itextpdf.text.pdf.ColumnText
 import com.itextpdf.text.pdf.draw.LineSeparator
 import com.itextpdf.text.pdf.fonts.otf.TableHeader
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfPCell;
-
+import com.itextpdf.text.pdf.PdfPTable
+import com.itextpdf.text.pdf.PdfPageEventHelper
+import com.itextpdf.text.pdf.PdfPCell
+import com.itextpdf.text.pdf.PdfWriter
 
 class PdfGenerator {
 
 	ByteArrayOutputStream generateInMemoryPdf() {
+		
 		// step 1
 		def document = new Document(PageSize.A4, 36, 36, 54, 36)
+		
+		
 		document.addAuthor("Slavica Petrovic")
 		document.addCreator("Slavica Petrovic")
 		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
@@ -34,10 +39,12 @@ class PdfGenerator {
 		def exportRecipes = new ByteArrayOutputStream()
 		PdfWriter writer = PdfWriter.getInstance(document, exportRecipes)
 		println("PdfWriter Created")
-/*
-		TableHeader event = new TableHeader();
+		
+		// assign the creation of the header and footer
+		HeaderFooter event = new HeaderFooter();
+		writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 		writer.setPageEvent(event);
-*/
+
 		// step 3
 		document.open()
 		println("Document Opened")
@@ -50,7 +57,7 @@ class PdfGenerator {
 		
 		// step 4
 		for (Recipe iterator:allRecipes) {
-			//document.add(getTable(new Date()))
+			
 			document.newPage()
 
 			//event..setHeader("Liste des recettes en provenance de www.piqueassiette.com")
@@ -100,25 +107,81 @@ class PdfGenerator {
 		return exportRecipes
 	}
 	
-	PdfPTable getTable(Date day)
-	throws DocumentException, IOException {
-	   final Font f = FontFactory.getFont(BaseFont.COURIER, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED, 10);
-		
-	    final float[] widths = [0.5f, 0.5f, 1.25f, 1.25f ] as float[];
-	    final PdfPTable table = new PdfPTable(widths); // Code 1
-		
-		final PdfPCell dateCell = new PdfPCell(new Phrase("HEELO", f));
-		table.addCell(dateCell);
-		
-		final PdfPCell timeCell = new PdfPCell(new Phrase("TTTT", f));
-		table.addCell(timeCell);
-		
-		final PdfPCell nameCell = new PdfPCell(new Phrase("GGG", f));
-		table.addCell(nameCell);
-		
-		final PdfPCell eventCell = new PdfPCell(new Phrase("HHHHH", f));
-		table.addCell(eventCell);
-    
-		return table;
-	}
-}
+	
+    /** Inner class to add a header and a footer. */
+    class HeaderFooter extends PdfPageEventHelper {
+        /** Alternating phrase for the header. */
+        Phrase[] header = new Phrase[2];
+        /** Current page number (will be reset for every chapter). */
+        int pagenumber;
+ 
+        /**
+         * Initialize one of the headers.
+         * @see com.itextpdf.text.pdf.PdfPageEventHelper#onOpenDocument(
+         *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
+         */
+        public void onOpenDocument(PdfWriter writer, Document document) {
+            header[0] = new Phrase("www.piqueassiette.com");
+        }
+ 
+        /**
+         * Initialize one of the headers, based on the chapter title;
+         * reset the page number.
+         * @see com.itextpdf.text.pdf.PdfPageEventHelper#onChapter(
+         *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document, float,
+         *      com.itextpdf.text.Paragraph)
+         */
+        public void onChapter(PdfWriter writer, Document document,
+                float paragraphPosition, Paragraph title) {
+            header[1] = new Phrase(title.getContent());
+            pagenumber = 1;
+        }
+ 
+        /**
+         * Increase the page number.
+         * @see com.itextpdf.text.pdf.PdfPageEventHelper#onStartPage(
+         *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
+         */
+        public void onStartPage(PdfWriter writer, Document document) {
+            pagenumber++;
+        }
+ 
+        /**
+         * Adds the header and the footer.
+         * @see com.itextpdf.text.pdf.PdfPageEventHelper#onEndPage(
+         *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
+         */
+        public void onEndPage(PdfWriter writer, Document document) {
+            Rectangle rect = writer.getBoxSize("art")
+			
+            switch(writer.getPageNumber() % 2) {
+/*            case 0:
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_RIGHT, header[0],
+                        rect.getRight(), rect.getTop(), 0);
+                break;
+            case 1:
+                ColumnText.showTextAligned(writer.getDirectContent(),
+                        Element.ALIGN_LEFT, header[1],
+                        rect.getLeft(), rect.getTop(), 0);
+                break;
+*/                
+				case 0:
+				ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, header[0], rect.right, rect.top, 0)
+				break;
+			case 1:
+				ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, header[1], rect.left, rect.top, 0) 
+				break;
+            }
+/*			
+            ColumnText.showTextAligned(writer.getDirectContent(),
+                    Element.ALIGN_CENTER, new Phrase(String.format("page %d", pagenumber)),
+                    (rect.getLeft() + rect.getRight()) / 2, rect.getBottom() - 18, 0);
+*/
+			float fX = (rect.left + rect.right) / 2
+			float fY = rect.bottom - 18
+			
+			ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(String.format("page %d", pagenumber)),fX , fY, 0)
+
+        }
+    }}
