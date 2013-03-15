@@ -26,19 +26,11 @@ class PdfGenerator {
 	ByteArrayOutputStream generateInMemoryPdf() {
 		
 		// step 1
-		def document = new Document(PageSize.A4, 36, 36, 54, 36)
-		
-		
-		document.addAuthor("Slavica Petrovic")
-		document.addCreator("Slavica Petrovic")
-		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
-		
-		println("Document Created")
+		def document = new Document(PageSize.A4, 36, 36, 54, 36)		
 		
 		// step 2
 		def exportRecipes = new ByteArrayOutputStream()
 		PdfWriter writer = PdfWriter.getInstance(document, exportRecipes)
-		println("PdfWriter Created")
 		
 		// assign the creation of the header and footer
 		HeaderFooter event = new HeaderFooter();
@@ -47,7 +39,11 @@ class PdfGenerator {
 
 		// step 3
 		document.open()
-		println("Document Opened")
+		
+		document.addAuthor("Slavica Petrovic")
+		document.addCreator("Slavica Petrovic")
+		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
+
 		
 		def allRecipes = Recipe.list(sort:'name')
 		
@@ -58,20 +54,21 @@ class PdfGenerator {
 		// step 4
 		for (Recipe iterator:allRecipes) {
 			
-			document.newPage()
+			//document.newPage()
 			
+			// name of the recipe
 			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
 			document.add(paragraph1)
-			println(iterator.name)
 			
 			Paragraph paragraph2 = new Paragraph("", font12)
+			
 			paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
 			paragraph2.add(Chunk.NEWLINE)
+			paragraph2.add(Chunk.NEWLINE)			
+			paragraph2.add("CatŽgorie: " + iterator.category.name)
 			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add("Categorie: " + iterator.category.name)
 			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add("Ingredients:")
+			paragraph2.add("IngrŽdients:")
 			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add(Chunk.NEWLINE)
 			paragraph2.add(iterator.ingredient)
@@ -87,18 +84,19 @@ class PdfGenerator {
 			if (iterator.photoSteps.size()>0) {
 				iterator.photoSteps.each {iteratorPhoto ->
 					Image img = Image.getInstance(iteratorPhoto.photo);
-					img.scaleAbsolute(250, 180);
+					//img.scaleAbsolute(250, 180);
 					
 					paragraph2.add(img)
-					paragraph2.add(Chunk.NEWLINE)
+					//paragraph2.add(Chunk.NEWLINE)
 				}
 			}
 			document.add(paragraph2)
+			
+			document.newPage()
 		}
 		
 		// step 5
 		document.close()
-		println("Document Closed")
 
 		return exportRecipes
 	}
