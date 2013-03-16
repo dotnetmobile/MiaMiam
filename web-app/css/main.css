@@ -581,10 +581,16 @@ th:hover, tr:hover {
 	text-decoration: underline;
 }
 
-.buttons .delete, .buttons .edit, .buttons .save {
+.buttons .delete, .buttons .edit, .buttons .save, .buttons .export {
 	background-position: 0.7em center;
 	background-repeat: no-repeat;
 	text-indent: 25px;
+}
+
+.buttons .export {
+	background-position: 0.7em center;
+	background-repeat: no-repeat;
+	text-indent: 2px;
 }
 
 .ie6 .buttons input.delete, .ie6 .buttons input.edit, .ie6 .buttons input.save,

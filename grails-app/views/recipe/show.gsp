@@ -67,7 +67,7 @@
 						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
 					</sec:ifAllGranted>	
 					<!--<g:form controller="recipe" action="generatePdfSingleRecipe" id="${recipeInstance?.id}"><g:submitButton name="genPDF2" value="Exporter la recette"/></g:form>-->
-					<g:actionSubmit class="delete" action="generatePdfSingleRecipe" id="${recipeInstance?.id}"  value="Exporter la recette"/>					
+					<g:actionSubmit class="export" action="generatePdfSingleRecipe" id="${recipeInstance?.id}"  value="${message(code: 'default.button.export.label', default: 'Export recipe')}"/>					
 				</fieldset>
 			</g:form>
 		</div>

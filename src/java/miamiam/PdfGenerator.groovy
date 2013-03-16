@@ -25,6 +25,10 @@ class PdfGenerator {
 	Document document
 	ByteArrayOutputStream exportRecipes
 
+	/**
+	 * Exports all recipes
+	 * @return a byte array containing all recipes
+	 */
 	ByteArrayOutputStream extractAllRecipesInMemory() {
 		
 		initDocument()
@@ -40,6 +44,10 @@ class PdfGenerator {
 		return exportRecipes
 	}
 	
+	/**
+	 * Exports one recipe
+	 * @return a byte array containing only one recipe
+	 */
 	ByteArrayOutputStream extractRecipeInMemory(Recipe recipe) {
 		
 		initDocument()
@@ -50,6 +58,11 @@ class PdfGenerator {
 
 		return exportRecipes
 	}
+	
+	/**
+	 * Adds to the document one recipe
+	 * @param recipe selected recipe
+	 */
 	void addRecipe(Recipe recipe) {
 		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
 		Font font18 = new Font(bf, 18);
@@ -94,6 +107,9 @@ class PdfGenerator {
 		//document.newPage()
 	}
 
+	/**
+	 * Initializes the document
+	 */
 	void initDocument() {
 		// step 1
 		document = new Document(PageSize.A4, 36, 36, 54, 36)
@@ -171,4 +187,5 @@ class PdfGenerator {
 			ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase(String.format("page %d", pagenumber)),fX , fY, 0)
 
         }
-    }}
+    }
+}
