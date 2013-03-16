@@ -65,7 +65,9 @@
 					<sec:ifAllGranted roles="ROLE_ADMIN">
 						<g:link class="edit" action="edit" id="${recipeInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
 						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-					</sec:ifAllGranted>						
+					</sec:ifAllGranted>	
+					<!--<g:form controller="recipe" action="generatePdfSingleRecipe" id="${recipeInstance?.id}"><g:submitButton name="genPDF2" value="Exporter la recette"/></g:form>-->
+					<g:actionSubmit class="delete" action="generatePdfSingleRecipe" id="${recipeInstance?.id}"  value="Exporter la recette"/>					
 				</fieldset>
 			</g:form>
 		</div>

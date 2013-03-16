@@ -22,21 +22,91 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfWriter
 
 class PdfGenerator {
+	Document document
+	ByteArrayOutputStream exportRecipes
 
-	ByteArrayOutputStream generateInMemoryPdf() {
+	ByteArrayOutputStream extractAllRecipesInMemory() {
 		
+		initDocument()
+		
+		def allRecipes = Recipe.list(sort:'name')
+
+		allRecipes.each { recipe->
+			addRecipe(recipe)
+		}
+		
+		document.close()
+
+		return exportRecipes
+	}
+	
+	ByteArrayOutputStream extractRecipeInMemory(Recipe recipe) {
+		
+		initDocument()
+		
+		addRecipe(recipe)
+		
+		document.close()
+
+		return exportRecipes
+	}
+	void addRecipe(Recipe recipe) {
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		Font font18 = new Font(bf, 18);
+		Font font12 = new Font(bf, 12);
+					
+		// name of the recipe
+		Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		document.add(paragraph1)
+		
+		Paragraph paragraph2 = new Paragraph("", font12)
+		
+		paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add("Cat使orie: " + recipe.category.name)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add("Ingr仕ients:")
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(recipe.ingredient)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add("Description:")
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(recipe.description)
+		paragraph2.add(Chunk.NEWLINE)
+		paragraph2.add(Chunk.NEWLINE)
+		
+
+		recipe.photoSteps.each {iteratorPhoto ->
+			Image img = Image.getInstance(iteratorPhoto.photo);
+			//img.scaleAbsolute(250, 180);
+			
+			paragraph2.add(img)
+		}
+
+		paragraph2.add(Chunk.NEXTPAGE)
+		document.add(paragraph2)
+		
+		//document.newPage()
+	}
+
+	void initDocument() {
 		// step 1
-		def document = new Document(PageSize.A4, 36, 36, 54, 36)		
+		document = new Document(PageSize.A4, 36, 36, 54, 36)
 		
 		// step 2
-		def exportRecipes = new ByteArrayOutputStream()
+		exportRecipes = new ByteArrayOutputStream()
 		PdfWriter writer = PdfWriter.getInstance(document, exportRecipes)
 		
 		// assign the creation of the header and footer
 		HeaderFooter event = new HeaderFooter();
 		writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 		writer.setPageEvent(event);
-
+		
 		// step 3
 		document.open()
 		
@@ -44,63 +114,7 @@ class PdfGenerator {
 		document.addCreator("Slavica Petrovic")
 		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
 
-		
-		def allRecipes = Recipe.list(sort:'name')
-		
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
-		Font font18 = new Font(bf, 18);
-		Font font12 = new Font(bf, 12);
-		
-		// step 4
-		for (Recipe iterator:allRecipes) {
-			
-			//document.newPage()
-			
-			// name of the recipe
-			Paragraph paragraph1 = new Paragraph(iterator.name, font18)
-			document.add(paragraph1)
-			
-			Paragraph paragraph2 = new Paragraph("", font12)
-			
-			paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)			
-			paragraph2.add("Cat使orie: " + iterator.category.name)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add("Ingr仕ients:")
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(iterator.ingredient)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add("Description:")
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(iterator.description)
-			paragraph2.add(Chunk.NEWLINE)
-			paragraph2.add(Chunk.NEWLINE)
-			
-			if (iterator.photoSteps.size()>0) {
-				iterator.photoSteps.each {iteratorPhoto ->
-					Image img = Image.getInstance(iteratorPhoto.photo);
-					//img.scaleAbsolute(250, 180);
-					
-					paragraph2.add(img)
-					//paragraph2.add(Chunk.NEWLINE)
-				}
-			}
-			document.add(paragraph2)
-			
-			document.newPage()
-		}
-		
-		// step 5
-		document.close()
-
-		return exportRecipes
 	}
-	
 	
     /** Inner class to add a header and a footer. */
     class HeaderFooter extends PdfPageEventHelper {

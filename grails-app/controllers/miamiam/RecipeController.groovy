@@ -156,7 +156,27 @@ class RecipeController {
 		//response.setContentType("application/octet-stream")
 		response.setContentType("application/pdf")
 		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\""
-		response.outputStream <<  pdfGenerator.generateInMemoryPdf().toByteArray()
+		response.outputStream <<  pdfGenerator.extractAllRecipesInMemory().toByteArray()
+		response.outputStream.flush()
+
+		return true
+
+		//redirect(action: "list", params: params)
+		
+	}
+
+	def generatePdfSingleRecipe(Long id) {
+		def recipeInstance = Recipe.get(id)
+		
+		PdfGenerator pdfGenerator = new PdfGenerator()
+
+		// force download
+		def fileName = "PiqueAssiette.pdf"
+
+		//response.setContentType("application/octet-stream")
+		response.setContentType("application/pdf")
+		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\""
+		response.outputStream <<  pdfGenerator.extractRecipeInMemory(recipeInstance).toByteArray()
 		response.outputStream.flush()
 
 		return true
