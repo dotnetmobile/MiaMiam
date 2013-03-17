@@ -171,7 +171,7 @@ class RecipeController {
 		PdfGenerator pdfGenerator = new PdfGenerator()
 
 		// force download
-		def fileName = "PiqueAssiette.pdf"
+		def fileName = recipeInstance.name + ".pdf"
 
 		//response.setContentType("application/octet-stream")
 		response.setContentType("application/pdf")

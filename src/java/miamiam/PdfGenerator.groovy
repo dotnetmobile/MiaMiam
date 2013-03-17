@@ -1,6 +1,7 @@
 package miamiam
 
 import com.itextpdf.awt.geom.Rectangle
+import com.itextpdf.text.Anchor
 import com.itextpdf.text.Document
 import com.itextpdf.text.DocumentException
 import com.itextpdf.text.PageSize
@@ -145,8 +146,13 @@ class PdfGenerator {
          *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
          */
         public void onOpenDocument(PdfWriter writer, Document document) {
-            header[0] = new Phrase("www.piqueassiette.com")
-			header[1] = new Phrase("www.piqueassiette.com")
+			Anchor anchor = new Anchor("www.piqueassiette.com")
+			anchor.setReference("http://www.piqueassiette.com")
+			
+            header[0] = new Phrase("")
+			header[1] = new Phrase("")
+			header[0].add(anchor)
+			header[1].add(anchor)
         }
  
         /**
