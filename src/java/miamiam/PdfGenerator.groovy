@@ -36,6 +36,8 @@ class PdfGenerator {
 		
 		def allRecipes = Recipe.list(sort:'name')
 
+		createTOC(allRecipes)
+		
 		allRecipes.each { recipe->
 			addRecipe(recipe)
 		}
@@ -70,7 +72,10 @@ class PdfGenerator {
 		Font font12 = new Font(bf, 12);
 					
 		// name of the recipe
-		Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		//setLocalDestination("2")
+		def recipeTitle = new Chunk(recipe.name, font18).setLocalDestination(recipe.name)
+		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		Paragraph paragraph1 = new Paragraph(recipeTitle)
 		document.add(paragraph1)
 		
 		Paragraph paragraph2 = new Paragraph("", font12)
@@ -131,6 +136,28 @@ class PdfGenerator {
 		document.addCreator("Slavica Petrovic")
 		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
 
+	}
+	
+	void createTOC(List<Recipe> allRecipes) {
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		Font font20 = new Font(bf, 20);
+		Font font12 = new Font(bf, 12);
+					
+		def tocTitle = new Chunk("Liste des recettes", font20)
+		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		Paragraph paragraph1 = new Paragraph(tocTitle)
+		document.add(paragraph1)
+		document.add(Chunk.NEWLINE)
+
+		allRecipes.each {recipeIterator ->			
+
+			def link = new Chunk("          " + recipeIterator.name, font12).setLocalGoto(recipeIterator.name)
+
+			document.add(new Paragraph(link));	
+		}
+		
+		document.newPage()
+		
 	}
 	
     /** Inner class to add a header and a footer. */
