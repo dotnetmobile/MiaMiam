@@ -34,6 +34,8 @@ class PdfGenerator {
 		
 		initDocument()
 		
+		createBookCover()
+		
 		def allRecipes = Recipe.list(sort:'name')
 
 		createTOC(allRecipes)
@@ -107,10 +109,11 @@ class PdfGenerator {
 			paragraph2.add(img)
 		}
 
-		paragraph2.add(Chunk.NEXTPAGE)
+		//paragraph2.add(Chunk.NEXTPAGE)
 		document.add(paragraph2)
+		document.add(Chunk.NEXTPAGE)
 		
-		//document.newPage()
+		document.newPage()
 	}
 
 	/**
@@ -136,6 +139,23 @@ class PdfGenerator {
 		document.addCreator("Slavica Petrovic")
 		document.addHeader("Liste des recettes en provenance de www.piqueassiette.com","")
 
+	}
+	
+	void createBookCover() {
+//		PdfPCell cell = new PdfPCell(new Phrase("Pique Assiette"));
+//		cell.setRotation(90);
+//		document.add(cell)
+		
+		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+		Font font20 = new Font(bf, 20);
+					
+		def bookCover = new Chunk("Pique Assiette", font20)
+		Paragraph paragraph1 = new Paragraph(bookCover)
+		document.add(paragraph1)
+		document.add(Chunk.NEWLINE)
+
+		
+		document.newPage()
 	}
 	
 	void createTOC(List<Recipe> allRecipes) {
