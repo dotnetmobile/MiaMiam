@@ -23,6 +23,12 @@ import com.itextpdf.text.pdf.PdfPCell
 import com.itextpdf.text.pdf.PdfWriter
 
 class PdfGenerator {
+	BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
+	
+	Font font20 = new Font(bf, 20);
+	Font font18 = new Font(bf, 18);
+	Font font12 = new Font(bf, 12);
+
 	Document document
 	ByteArrayOutputStream exportRecipes
 
@@ -68,17 +74,9 @@ class PdfGenerator {
 	 * Adds to the document one recipe
 	 * @param recipe selected recipe
 	 */
-	void addRecipe(Recipe recipe) {
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
-		Font font18 = new Font(bf, 18);
-		Font font12 = new Font(bf, 12);
-					
-		// name of the recipe
-		//setLocalDestination("2")
-		def recipeTitle = new Chunk(recipe.name, font18).setLocalDestination(recipe.name)
-		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
-		Paragraph paragraph1 = new Paragraph(recipeTitle)
-		document.add(paragraph1)
+	void addRecipe(Recipe recipe) {					
+
+		addTitleRecipe(recipe)
 		
 		Paragraph paragraph2 = new Paragraph("", font12)
 		
@@ -101,20 +99,21 @@ class PdfGenerator {
 		paragraph2.add(Chunk.NEWLINE)
 		paragraph2.add(Chunk.NEWLINE)
 		
-
-		recipe.photoSteps.each {iteratorPhoto ->
-			Image img = Image.getInstance(iteratorPhoto.photo);
-			//img.scaleAbsolute(250, 180);
-			
-			paragraph2.add(img)
-		}
-
-		//paragraph2.add(Chunk.NEXTPAGE)
 		document.add(paragraph2)
 		document.add(Chunk.NEXTPAGE)
-		
 		document.newPage()
+
+		addPhotos(recipe)
 	}
+
+	private addTitleRecipe(Recipe recipe) {
+		// name of the recipe
+		def recipeTitle = new Chunk(recipe.name, font18).setLocalDestination(recipe.name)
+		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		Paragraph paragraph1 = new Paragraph(recipeTitle)
+		document.add(paragraph1)
+	}
+
 
 	/**
 	 * Initializes the document
@@ -146,9 +145,6 @@ class PdfGenerator {
 //		cell.setRotation(90);
 //		document.add(cell)
 		
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
-		Font font20 = new Font(bf, 20);
-					
 		def bookCover = new Chunk("Pique Assiette", font20)
 		Paragraph paragraph1 = new Paragraph(bookCover)
 		document.add(paragraph1)
@@ -158,11 +154,7 @@ class PdfGenerator {
 		document.newPage()
 	}
 	
-	void createTOC(List<Recipe> allRecipes) {
-		BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
-		Font font20 = new Font(bf, 20);
-		Font font12 = new Font(bf, 12);
-					
+	void createTOC(List<Recipe> allRecipes) {					
 		def tocTitle = new Chunk("Liste des recettes", font20)
 		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
 		Paragraph paragraph1 = new Paragraph(tocTitle)
@@ -180,6 +172,84 @@ class PdfGenerator {
 		
 	}
 	
+	/**
+	 * Creates the page containing the photos for the corresponding recipe
+	 * @param recipe recipe
+	 */
+	private addPhotos(Recipe recipe) {
+		// don't add an image page if no image is available
+		if (recipe.photoSteps.size()==0) return
+		
+		addTitleRecipe(recipe)
+		
+		Paragraph paragraph = new Paragraph("", font12)
+		paragraph.add(new LineSeparator(0.5f, 100, null, 0, -5))
+		paragraph.add(Chunk.NEWLINE)
+		paragraph.add(Chunk.NEWLINE)
+
+		int totalPhotos = recipe.photoSteps.size()
+		
+		if (totalPhotos == 1)
+			addSinglePhoto(recipe, paragraph)
+		else if (totalPhotos == 2)
+			addDualPhotos(recipe, paragraph)
+		else
+			addTablePhotos(recipe, paragraph)
+/*			
+		recipe.photoSteps.each {iteratorPhoto ->
+			Image img = Image.getInstance(iteratorPhoto.photo);
+			//img.scaleAbsolute(250, 180);
+
+			paragraph.add(img)
+		}
+*/
+		document.add(paragraph)
+		document.add(Chunk.NEXTPAGE)
+		document.newPage()
+	}
+
+	private void addSinglePhoto(Recipe recipe, Paragraph paragraph) {
+		/*
+		PdfPTable table = new PdfPTable(1)
+		
+		Image image = Image.getInstance(recipe.photoSteps..photo)
+		PdfPCell cell = new PdfPCell(image, false)
+
+		table.addCell(cell)
+		paragraph.add(table)
+*/		
+		addDualPhotos(recipe, paragraph)
+
+	}
+
+	private void addDualPhotos(Recipe recipe, Paragraph paragraph) {
+		int rows = recipe.photoSteps.size() / 2
+		
+		if (rows == 0) rows = 1
+		
+		PdfPTable table = new PdfPTable(rows)
+		
+		table.setSpacingBefore(10f);
+		table.setSpacingAfter(10f);
+		
+		recipe.photoSteps.each { photoIterator ->
+			Image image = Image.getInstance(photoIterator.photo)
+			
+			PdfPCell cell = new PdfPCell(image, false)
+			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+			cell.setVerticalAlignment(Element.ALIGN_CENTER);
+			
+			table.addCell(cell)
+		}
+		
+		paragraph.add(table)
+	}
+
+	private void addTablePhotos(Recipe recipe, Paragraph paragraph) {
+		addDualPhotos(recipe, paragraph)
+	}
+
     /** Inner class to add a header and a footer. */
     class HeaderFooter extends PdfPageEventHelper {
         /** Alternating phrase for the header. */
