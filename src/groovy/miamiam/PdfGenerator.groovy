@@ -41,19 +41,16 @@ class PdfGenerator {
 		initDocument()
 		
 		createBookCover()
-		
-		def allRecipes = Recipe.list(sort:'name')
 
-		createTOC(allRecipes)
+		createIntroduction()
 		
-		allRecipes.each { recipe->
-			addRecipe(recipe)
-		}
+		createAllRecipes()
 		
 		document.close()
 
 		return exportRecipes
 	}
+
 	
 	/**
 	 * Exports one recipe
@@ -140,11 +137,10 @@ class PdfGenerator {
 
 	}
 	
-	void createBookCover() {
-//		PdfPCell cell = new PdfPCell(new Phrase("Pique Assiette"));
-//		cell.setRotation(90);
-//		document.add(cell)
-		
+	/**
+	 * Creates book cover
+	 */
+	void createBookCover() {		
 		def bookCover = new Chunk("Pique Assiette", font20)
 		Paragraph paragraph1 = new Paragraph(bookCover)
 		document.add(paragraph1)
@@ -154,6 +150,10 @@ class PdfGenerator {
 		document.newPage()
 	}
 	
+	/**
+	 * Creates table of contents
+	 * @param allRecipes all recipes available
+	 */
 	void createTOC(List<Recipe> allRecipes) {					
 		def tocTitle = new Chunk("Liste des recettes", font20)
 		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
@@ -172,6 +172,46 @@ class PdfGenerator {
 		
 	}
 	
+	/**
+	 * Creates author's introduction
+	 */
+	private createIntroduction() {
+		def preface = new Chunk("PrŽface", font20)
+		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+		Paragraph paragraph1 = new Paragraph(preface)
+		paragraph1.add(new LineSeparator(0.5f, 100, null, 0, -5))
+		document.add(paragraph1)
+		document.add(Chunk.NEWLINE)
+		
+		def aPropos = new Chunk("""Il y a des choses qu'on aiment partager entre amies, familles et connaissance, ce sont nos recettes prŽfŽrŽes. 
+		C'est la raison pour laquelle j'ai voulu crŽer mon site pour faire plaisir et se faire plaisir!
+		Ma cuisine se veut facile, gožteuse, respectueuse des saisons et hŽtŽroclite.
+
+		Bon appŽtit! 
+
+		Slavica Petrovic""", font12)
+		
+		Paragraph paragraph2 = new Paragraph(aPropos)
+		document.add(paragraph2)
+		document.add(Chunk.NEWLINE)
+		
+		document.newPage()
+	}
+	
+	/**
+	 * Creates all recipes
+	 * 
+	 */
+	private createAllRecipes() {
+		def allRecipes = Recipe.list(sort:'name')
+
+		createTOC(allRecipes)
+
+		allRecipes.each { recipe->
+			addRecipe(recipe)
+		}
+	}
+
 	/**
 	 * Creates the page containing the photos for the corresponding recipe
 	 * @param recipe recipe
@@ -223,11 +263,15 @@ class PdfGenerator {
 	}
 
 	private void addDualPhotos(Recipe recipe, Paragraph paragraph) {
-		int rows = recipe.photoSteps.size() / 2
+		int size = recipe.photoSteps.size()
+		int columns
 		
-		if (rows == 0) rows = 1
+		if (size == 0) return
+		else if (size == 1) columns = 1
+		else columns = 2
 		
-		PdfPTable table = new PdfPTable(rows)
+		
+		PdfPTable table = new PdfPTable(columns)
 		
 		table.setSpacingBefore(10f);
 		table.setSpacingAfter(10f);
