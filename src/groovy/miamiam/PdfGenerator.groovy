@@ -251,10 +251,25 @@ class PdfGenerator {
 	 * 
 	 */
 	private createAllRecipes() {
+/*		
 		def allRecipes = Recipe.list(sort:'name')
 
 		createTOC(allRecipes)
 
+		allRecipes.each { recipe->
+			addRecipe(recipe)
+		}
+*/
+		def allRecipes
+		def c = Recipe.createCriteria()
+		
+		allRecipes = c.list() {
+			groupProperty('category.name')
+			//order('category.name')
+		}
+		
+		createTOC(allRecipes)
+		
 		allRecipes.each { recipe->
 			addRecipe(recipe)
 		}
