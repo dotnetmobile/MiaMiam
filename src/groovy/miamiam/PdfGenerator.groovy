@@ -25,6 +25,7 @@ import com.itextpdf.text.pdf.PdfWriter
 class PdfGenerator {
 	BaseFont bf = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.EMBEDDED);
 	
+	Font font40 = new Font(bf, 40);
 	Font font20 = new Font(bf, 20);
 	Font font18 = new Font(bf, 18);
 	Font font12 = new Font(bf, 12);
@@ -36,11 +37,11 @@ class PdfGenerator {
 	 * Exports all recipes
 	 * @return a byte array containing all recipes
 	 */
-	ByteArrayOutputStream extractAllRecipesInMemory() {
+	ByteArrayOutputStream extractAllRecipesInMemory(def folder) {
 		
 		initDocument()
 		
-		createBookCover()
+		createBookCover(folder)
 
 		createIntroduction()
 		
@@ -140,9 +141,31 @@ class PdfGenerator {
 	/**
 	 * Creates book cover
 	 */
-	void createBookCover() {		
-		def bookCover = new Chunk("Pique Assiette", font20)
+	void createBookCover(def folder) {		
+		def bookCover = new Chunk("Pique Assiette", font40)
 		Paragraph paragraph1 = new Paragraph(bookCover)
+		paragraph1.setAlignment(Element.ALIGN_CENTER);
+		paragraph1.setSpacingBefore(350);
+		//paragraph1.setSpacingBefore(250);
+		
+//		Image image = Image.getInstance("/Users/michel_petrovic/Documents/workspace-ggts-3.1.0.RELEASE/MiaMiam/web-app/images/fait_maison.png")
+		Image image = Image.getInstance(folder + "/fait_maison.png")
+
+		
+		PdfPTable table = new PdfPTable(1)
+		
+		table.setSpacingBefore(180f);
+		table.setSpacingAfter(10f);
+		
+		PdfPCell cell = new PdfPCell(image, false)
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_CENTER);
+		
+		table.addCell(cell)
+
+		paragraph1.add(table)
+		
 		document.add(paragraph1)
 		document.add(Chunk.NEWLINE)
 
@@ -344,6 +367,8 @@ class PdfGenerator {
          *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
          */
         public void onEndPage(PdfWriter writer, Document document) {
+			if (pagenumber<=2) return
+			
             Rectangle rect = writer.getBoxSize("art")
 			
 			ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_RIGHT, header[0], rect.right, rect.top, 0)

@@ -152,11 +152,12 @@ class RecipeController {
 
 		// force download
 		def fileName = "PiqueAssiette.pdf"
+		def baseFolder = grailsAttributes.getApplicationContext().getResource("/images/").getFile().toString()
 
 		//response.setContentType("application/octet-stream")
 		response.setContentType("application/pdf")
 		response.setHeader "Content-disposition", "attachment; filename=\"${fileName}\""
-		response.outputStream <<  pdfGenerator.extractAllRecipesInMemory().toByteArray()
+		response.outputStream <<  pdfGenerator.extractAllRecipesInMemory(baseFolder).toByteArray()
 		response.outputStream.flush()
 
 		return true
