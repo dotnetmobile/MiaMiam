@@ -32,18 +32,20 @@ class PdfGenerator {
 
 	Document document
 	ByteArrayOutputStream exportRecipes
+	boolean exportAllRecipes = false
 
 	/**
 	 * Exports all recipes
 	 * @return a byte array containing all recipes
 	 */
 	ByteArrayOutputStream extractAllRecipesInMemory(def folder) {
+		exportAllRecipes = true
 		
 		initDocument()
 		
 		createBookCover(folder)
 
-		createIntroduction()
+		createIntroduction(folder)
 		
 		createAllRecipes()
 		
@@ -146,9 +148,7 @@ class PdfGenerator {
 		Paragraph paragraph1 = new Paragraph(bookCover)
 		paragraph1.setAlignment(Element.ALIGN_CENTER);
 		paragraph1.setSpacingBefore(350);
-		//paragraph1.setSpacingBefore(250);
 		
-//		Image image = Image.getInstance("/Users/michel_petrovic/Documents/workspace-ggts-3.1.0.RELEASE/MiaMiam/web-app/images/fait_maison.png")
 		Image image = Image.getInstance(folder + "/fait_maison.png")
 
 		
@@ -198,7 +198,7 @@ class PdfGenerator {
 	/**
 	 * Creates author's introduction
 	 */
-	private createIntroduction() {
+	private createIntroduction(def folder) {
 		def preface = new Chunk("PrŽface", font20)
 		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
 		Paragraph paragraph1 = new Paragraph(preface)
@@ -206,7 +206,7 @@ class PdfGenerator {
 		document.add(paragraph1)
 		document.add(Chunk.NEWLINE)
 		
-		def aPropos = new Chunk("""Il y a des choses qu'on aiment partager entre amies, familles et connaissance, ce sont nos recettes prŽfŽrŽes. 
+		def aPropos = new Chunk("""Il y a des choses qu'on aime partager entre amies, familles et connaissances, ce sont nos recettes prŽfŽrŽes. 
 		C'est la raison pour laquelle j'ai voulu crŽer mon site pour faire plaisir et se faire plaisir!
 		Ma cuisine se veut facile, gožteuse, respectueuse des saisons et hŽtŽroclite.
 
@@ -217,7 +217,32 @@ class PdfGenerator {
 		Paragraph paragraph2 = new Paragraph(aPropos)
 		document.add(paragraph2)
 		document.add(Chunk.NEWLINE)
+
+//----
+		Paragraph paragraph3 = new Paragraph()
+		paragraph3.setAlignment(Element.ALIGN_CENTER);
+//		paragraph1.setSpacingBefore(350);
 		
+		Image image = Image.getInstance(folder + "/miamiam_logo.png")
+
+		
+		PdfPTable table = new PdfPTable(1)
+		
+		table.setSpacingBefore(80f);
+		table.setSpacingAfter(10f);
+		
+		PdfPCell cell = new PdfPCell(image, false)
+		cell.setBorder(Rectangle.NO_BORDER);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_CENTER);
+		
+		table.addCell(cell)
+
+		paragraph3.add(table)
+
+		document.add(paragraph3)
+//----		
+				
 		document.newPage()
 	}
 	
@@ -296,16 +321,17 @@ class PdfGenerator {
 		
 		PdfPTable table = new PdfPTable(columns)
 		
-		table.setSpacingBefore(10f);
-		table.setSpacingAfter(10f);
+		table.setSpacingBefore(50f)
+		table.setSpacingAfter(10f)
 		
 		recipe.photoSteps.each { photoIterator ->
 			Image image = Image.getInstance(photoIterator.photo)
 			
 			PdfPCell cell = new PdfPCell(image, false)
-			cell.setBorder(Rectangle.NO_BORDER);
-			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-			cell.setVerticalAlignment(Element.ALIGN_CENTER);
+			cell.setBorder(Rectangle.NO_BORDER)
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER)
+			cell.setVerticalAlignment(Element.ALIGN_CENTER)
+			cell.setPadding(5f)
 			
 			table.addCell(cell)
 		}
@@ -367,7 +393,7 @@ class PdfGenerator {
          *      com.itextpdf.text.pdf.PdfWriter, com.itextpdf.text.Document)
          */
         public void onEndPage(PdfWriter writer, Document document) {
-			if (pagenumber<=2) return
+			if (exportAllRecipes && pagenumber<=2) return
 			
             Rectangle rect = writer.getBoxSize("art")
 			
