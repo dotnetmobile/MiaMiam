@@ -179,7 +179,7 @@ class PdfGenerator {
 	 */
 	void createTOC(List<Recipe> allRecipes) {					
 		def tocTitle = new Chunk("Liste des recettes", font20)
-		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+
 		Paragraph paragraph1 = new Paragraph(tocTitle)
 		document.add(paragraph1)
 		document.add(Chunk.NEWLINE)
@@ -194,13 +194,37 @@ class PdfGenerator {
 		document.newPage()
 		
 	}
-	
+
+	/**
+	 * Creates table of contents
+	 * @param allRecipes all recipes available
+	 */
+	void createCategoryTOC(List<Recipe> allRecipes) {
+		boolean displayCategory = true
+		
+		allRecipes.each {recipeIterator ->
+
+			if (displayCategory) {
+				def categoryName = new Chunk("   " + recipeIterator.category.name, font12)
+				
+				document.add(new Paragraph(categoryName));
+				
+				displayCategory = false				
+			}
+			
+			def link = new Chunk("          " + recipeIterator.name, font12).setLocalGoto(recipeIterator.name)
+
+			document.add(new Paragraph(link));
+		}
+		
+	}
+
 	/**
 	 * Creates author's introduction
 	 */
 	private createIntroduction(def folder) {
 		def preface = new Chunk("PrŽface", font20)
-		//Paragraph paragraph1 = new Paragraph(recipe.name, font18)
+
 		Paragraph paragraph1 = new Paragraph(preface)
 		paragraph1.add(new LineSeparator(0.5f, 100, null, 0, -5))
 		document.add(paragraph1)
@@ -218,10 +242,9 @@ class PdfGenerator {
 		document.add(paragraph2)
 		document.add(Chunk.NEWLINE)
 
-//----
+
 		Paragraph paragraph3 = new Paragraph()
 		paragraph3.setAlignment(Element.ALIGN_CENTER);
-//		paragraph1.setSpacingBefore(350);
 		
 		Image image = Image.getInstance(folder + "/miamiam_logo.png")
 
@@ -240,8 +263,7 @@ class PdfGenerator {
 
 		paragraph3.add(table)
 
-		document.add(paragraph3)
-//----		
+		document.add(paragraph3)	
 				
 		document.newPage()
 	}
@@ -251,24 +273,39 @@ class PdfGenerator {
 	 * 
 	 */
 	private createAllRecipes() {
-/*		
-		def allRecipes = Recipe.list(sort:'name')
+		def tocTitle = new Chunk("Liste des recettes", font20)
 
-		createTOC(allRecipes)
+		Paragraph paragraph1 = new Paragraph(tocTitle)
+		document.add(paragraph1)
+		document.add(Chunk.NEWLINE)
 
-		allRecipes.each { recipe->
-			addRecipe(recipe)
-		}
-*/
-		def allRecipes
-		def c = Recipe.createCriteria()
+ 
+		List<Recipe> allRecipes = new ArrayList<Recipe>()
 		
-		allRecipes = c.list() {
-			groupProperty('category.name')
-			//order('category.name')
-		}
+		def categories = Category.list(sort:'name')
 		
-		createTOC(allRecipes)
+		categories.each { categoryIterator ->
+			List<Recipe> recipesCategory = new ArrayList<Recipe>()
+			
+			def subListRecipes 
+			
+			def recipeCriteria = Recipe.createCriteria()
+			
+			subListRecipes = recipeCriteria.list(sort:'name') {
+				eq("category.id", categoryIterator.id)
+			}	
+			
+			subListRecipes.each { rec-> 
+				recipesCategory.add(rec)
+				allRecipes.add(rec)
+			}
+			
+			createCategoryTOC(recipesCategory)
+		}
+				
+		
+		
+		document.newPage()
 		
 		allRecipes.each { recipe->
 			addRecipe(recipe)
@@ -312,17 +349,7 @@ class PdfGenerator {
 	}
 
 	private void addSinglePhoto(Recipe recipe, Paragraph paragraph) {
-		/*
-		PdfPTable table = new PdfPTable(1)
-		
-		Image image = Image.getInstance(recipe.photoSteps..photo)
-		PdfPCell cell = new PdfPCell(image, false)
-
-		table.addCell(cell)
-		paragraph.add(table)
-*/		
 		addDualPhotos(recipe, paragraph)
-
 	}
 
 	private void addDualPhotos(Recipe recipe, Paragraph paragraph) {
