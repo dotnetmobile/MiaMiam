@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main">
+		<r:require module="modernizr" />
 		<g:set var="entityName" value="${message(code: 'recipe.label', default: 'Recipe')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>

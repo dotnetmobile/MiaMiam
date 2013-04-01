@@ -4,6 +4,7 @@
 <html>
 	<head>
 		<meta name="layout" content="main"/>
+		<r:require module="modernizr" />
 		<g:set var="entityName" value="${message(code: 'recipe.label', default: 'Recipe')}" />
 		<g:set var="recipeName" value="${recipeInstance?.name}"/>
 		<title><g:message code="recipe.show.label" args="[entityName]" /></title>
