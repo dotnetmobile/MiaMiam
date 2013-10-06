@@ -2,12 +2,17 @@
 <%@ page import="miamiam.Recipe" %>
 
 <!DOCTYPE html>
-<html>
+<html class="no-js">
 	<head>
 		<meta name="layout" content="main">
 		<r:require module="modernizr" />
 		<g:set var="entityName" value="${message(code: 'recipe.label', default: 'Recipe')}" />
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
+		<!-- 
+		<script src="js/modernizr.custom.56685.js"></script> 
+		<g:javascript src="modernizr.custom.56685.js"></g:javascript>
+		<g:javascript src="modernizr1.js"></g:javascript>
+		-->
 	</head>
 	<body>
 		<a href="#list-recipe" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
