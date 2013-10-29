@@ -83,10 +83,10 @@ class PdfGenerator {
 		paragraph2.add(new LineSeparator(0.5f, 100, null, 0, -5))
 		paragraph2.add(Chunk.NEWLINE)
 		paragraph2.add(Chunk.NEWLINE)
-		paragraph2.add("CatŽgorie: " + recipe.category.name)
+		paragraph2.add("CateÌgorie: " + recipe.category.name)
 		paragraph2.add(Chunk.NEWLINE)
 		paragraph2.add(Chunk.NEWLINE)
-		paragraph2.add("IngrŽdients:")
+		paragraph2.add("IngreÌdients:")
 		paragraph2.add(Chunk.NEWLINE)
 		paragraph2.add(Chunk.NEWLINE)
 		paragraph2.add(recipe.ingredient)
@@ -223,18 +223,18 @@ class PdfGenerator {
 	 * Creates author's introduction
 	 */
 	private createIntroduction(def folder) {
-		def preface = new Chunk("PrŽface", font20)
+		def preface = new Chunk("PreÌface", font20)
 
 		Paragraph paragraph1 = new Paragraph(preface)
 		paragraph1.add(new LineSeparator(0.5f, 100, null, 0, -5))
 		document.add(paragraph1)
 		document.add(Chunk.NEWLINE)
 		
-		def aPropos = new Chunk("""Il y a des choses qu'on aime partager entre amies, familles et connaissances, ce sont nos recettes prŽfŽrŽes. 
-		C'est la raison pour laquelle j'ai voulu crŽer mon site pour faire plaisir et se faire plaisir!
-		Ma cuisine se veut facile, gožteuse, respectueuse des saisons et hŽtŽroclite.
+		def aPropos = new Chunk("""Il y a des choses qu'on aime partager entre amies, familles et connaissances, ce sont nos recettes preÌfeÌreÌes. 
+		C'est la raison pour laquelle j'ai voulu creÌer mon site pour faire plaisir et se faire plaisir!
+		Ma cuisine se veut facile, gouteuse, respectueuse des saisons et heÌteÌroclite.
 
-		Bon appŽtit! 
+		Bon appeÌtit! 
 
 		Slavica Petrovic""", font12)
 		
