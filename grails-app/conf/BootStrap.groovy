@@ -146,6 +146,69 @@ class BootStrap {
 		String fileCakeNoixOrange2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/cake_orange_resized_250_188.JPG'
 		associatePhoto(fileCakeNoixOrange1, 19, 'Cake noix/orange', 'Cake noix/orange')
 		associatePhoto(fileCakeNoixOrange2, 19, 'Cake noix/orange', 'Cake noix/orange')
+
+		String fileChinois = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/chinois_resized_250_188.JPG'
+		associatePhoto(fileChinois, 20, 'Chinois', 'Chinois')
+
+
+		String fileGateauChocoPatissier1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/gateau_choco_resized_250_188.JPG'
+		String fileGateauChocoPatissier2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/gateau_chocolat_patissier_coupe_resized_250_166.JPG'
+		associatePhoto(fileGateauChocoPatissier1, 21, 'Gâteau chocolat comme le pâtissier', 'Gâteau chocolat comme le pâtissier')
+		associatePhoto(fileGateauChocoPatissier2, 21, 'Gâteau chocolat comme le pâtissier', 'Gâteau chocolat comme le pâtissier')
+
+		String fileGaufrePomme = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/graufre_pomme_resized_250_188.JPG'
+		associatePhoto(fileGaufrePomme, 22, 'Gaufres à la pomme', 'Gaufres à la pomme')
+
+		String fileMesCroquants = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/croquant_prefere_250_166.JPG'
+		associatePhoto(fileMesCroquants, 23, 'Mes croquants préférés', 'Mes croquants préférés')
+		
+		String fileMuffins1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/mufin_v2_resized_250_188.JPG'
+		String fileMuffins2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/mufin_v3_resized_250_188.JPG'
+		String fileMuffins3 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/mufin_v4_resized_250_188.JPG'
+		String fileMuffins4 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/mufin_v6_resized_250_188.JPG'
+		associatePhoto(fileMuffins1, 26, 'Muffins', 'Muffins')
+		associatePhoto(fileMuffins2, 26, 'Muffins', 'Muffins')
+		associatePhoto(fileMuffins3, 26, 'Muffins', 'Muffins')
+		associatePhoto(fileMuffins4, 26, 'Muffins', 'Muffins')
+
+		String fileRizAuLait1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/gateau_riz_resized_250_188.JPG'
+		String fileRizAuLait2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/gateau__riz_v2_resized_250_188.JPG'
+		associatePhoto(fileRizAuLait1, 27, 'Riz au lait parfumé à la cannelle/citron', 'Riz au lait parfumé à la cannelle/citron')
+		associatePhoto(fileRizAuLait2, 27, 'Riz au lait parfumé à la cannelle/citron', 'Riz au lait parfumé à la cannelle/citron')
+
+		String fileBouletteRiz1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/boulette_de_riz_coupee_resized_250_188.JPG'
+		String fileBouletteRiz2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/Boulettes_de_riz_250_188.JPG'
+		associatePhoto(fileBouletteRiz1, 29, 'Boulettes de riz', 'Boulettes de riz')
+		associatePhoto(fileBouletteRiz2, 29, 'Boulettes de riz', 'Boulettes de riz')
+
+		String fileChoucroute = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/choucroute_resized_255_166.JPG'
+		associatePhoto(fileChoucroute, 30, 'Choucroute façon belle-mère', 'Choucroute façon belle-mère')
+
+		String filePoivronFarci1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/choux_farci_1_resized_250_188.JPG'
+		String filePoivronFarci2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/choux_farci_2_resized_250_188.JPG'
+		String filePoivronFarci3 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/choux_farci_3_resized_250_188.JPG'
+		String filePoivronFarci4 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/choux_farci_resized_250_166.JPG'
+		associatePhoto(filePoivronFarci1, 31, 'Choux ou poivrons farcis', 'Choux ou poivrons farcis')
+		associatePhoto(filePoivronFarci2, 31, 'Choux ou poivrons farcis', 'Choux ou poivrons farcis')
+		associatePhoto(filePoivronFarci3, 31, 'Choux ou poivrons farcis', 'Choux ou poivrons farcis')
+		associatePhoto(filePoivronFarci4, 31, 'Choux ou poivrons farcis', 'Choux ou poivrons farcis')
+
+		String fileGalettePommeTerre1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/galette_pdt_resized_250_188.JPG'
+		String fileGalettePommeTerre2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/galette_pdt_stuck_resized_250_188.JPG'
+		associatePhoto(fileGalettePommeTerre1, 32, 'Galette de pommes de terre', 'Galette de pommes de terre')
+		associatePhoto(fileGalettePommeTerre2, 32, 'Galette de pommes de terre', 'Galette de pommes de terre')
+
+		String fileHamburger1 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/hamburger_closed_vertical_resized_188_250.JPG'
+		String fileHamburger2 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/hamburger_vertical_resized_188_250.JPG'
+		String fileHamburger3 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/hamburger_hori_closed_resized_250_188.JPG'
+		String fileHamburger4 = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/hamburger_hori_opened_resized_250_188.JPG'
+		associatePhoto(fileHamburger1, 33, 'Hamburger fait maison', 'Hamburger fait maison')
+		associatePhoto(fileHamburger2, 33, 'Hamburger fait maison', 'Hamburger fait maison')
+		associatePhoto(fileHamburger3, 33, 'Hamburger fait maison', 'Hamburger fait maison')
+		associatePhoto(fileHamburger4, 33, 'Hamburger fait maison', 'Hamburger fait maison')
+
+		String filePouele = '/Users/michel_petrovic/Desktop/PiqueAssiettePhotos/pouele_resized_250_160.JPG'
+		associatePhoto(filePouele, 34, 'La poêlée réclamée par mes fils', 'La poêlée réclamée par mes fils')
 	}
 
 	def associatePhoto(file, recipeId, name, description) {
