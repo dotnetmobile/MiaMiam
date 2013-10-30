@@ -510,7 +510,7 @@ Rajouter 2 cuillères à soupe de vinaigre balsamique, 3 cuillères à soupe
 Laisser mijoter environ 5 minutes. 
 A part, faire fondre 10 gramme de farine et 10 gramme de beurre et ajouter ce mélange à la sauce.
 Monter le hamburger selon vos goûts. 
-Server avec de la salade, des cornichons.');
+Servir avec de la salade, des cornichons.');
 INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (34, 0, 6, 'La poêlée réclamée par mes fils Pizza','Selon l''appétit des convives, 
 prévoyez 4 à 5 petites pommes de terres charlotte, 
 1 poireau entier,
