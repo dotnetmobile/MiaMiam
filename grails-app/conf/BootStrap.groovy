@@ -211,6 +211,9 @@ class BootStrap {
 
 		String filePouele = recipePicturesPath + 'pouele_resized_250_160.JPG'
 		associatePhoto(filePouele, 34, 'La poêlée réclamée par mes fils', 'La poêlée réclamée par mes fils')
+
+		String filePizza = recipePicturesPath + 'pizza_resized_250_188.JPG'
+		associatePhoto(filePizza, 35, 'Pizza', 'Pizza')
 	}
 
 	def associatePhoto(file, recipeId, name, description) {

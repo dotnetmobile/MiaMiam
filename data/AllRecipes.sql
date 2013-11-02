@@ -202,7 +202,7 @@ Dès que chaque mi-cuit forme une croûte, c''est que c''est bon à servir de
 Pour celles et ceux qui veulent prendre de l''avance, vous pouvez les préparer la veille et les réserver au réfrigérateur. 
 Avant de les enfourner, laisser les environ 30 minutes à température ambiante. Succès assuré!!!');
 INSERT INTO category (id, version, name, description) VALUES (3, 0, 'Entrée', ''); 
-INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (14, 0, 3, 'Quiche au saumon Tarte à l''oignon','Du basilic
+INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (14, 0, 3, 'Quiche au saumon','Du basilic
 Du poivre
 3 œufs
 200 gr de saumon fumé
@@ -511,7 +511,7 @@ Laisser mijoter environ 5 minutes.
 A part, faire fondre 10 gramme de farine et 10 gramme de beurre et ajouter ce mélange à la sauce.
 Monter le hamburger selon vos goûts. 
 Servir avec de la salade, des cornichons.');
-INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (34, 0, 6, 'La poêlée réclamée par mes fils Pizza','Selon l''appétit des convives, 
+INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (34, 0, 6, 'La poêlée réclamée par mes fils','Selon l''appétit des convives, 
 prévoyez 4 à 5 petites pommes de terres charlotte, 
 1 poireau entier,
 2 oignons,
@@ -524,3 +524,35 @@ Séparément faites revenir les lardons sans matière grasse dans une poêle
 Réserver.
 Dresser l''ensemble sur une assiette en réchauffant la cancoillotte au préalable.
 Servir aussitôt et déguster rapidement.');
+INSERT INTO recipe (id, version, category_id, name, ingredient, description) VALUES (35, 0, 6, 'Pizza','Pour une pizza rectangulaire de 28 sur 28 ou ronde de 35 cm. 350 grammes de farine type 55 ou 65.
+1 sachet de levure de boulanger déshydraté
+2 cuillère à soupe d''huile d''olive
+1/2 cuillère à café de sel fin. Garniture:
+Huile d''olive,
+Sauce tomate,
+Saucisson de type salami danois, chorizo... 
+Fromage: chèvre, emmental et mozzarella. câpres, cœurs d''artichauts, olives vertes et noires.','Mêler la farine et le sel dans le saladier.
+Creuser un grand trou au milieu. Verser-y la levure sèche.
+Versez l''huile dans le verre doseur.
+Ajouter de l''eau tiède jusqu''à atteindre 25 cl.
+Versez le liquide sur la levure. Ne mélangez pas. Attendez 3 minutes que la levure soit molle et gonflée.
+Pétrissez.
+1. Mélangez d''une main la farine et le liquide pour obtenir une pâte plutôt fermé et collante.
+2. Avec les 2 mains, durant 5 minutes, étirez-la et repliez-la en 2, comme pour y enfermer de l''air. 
+3. Au bout de ce temps, elle devient plus élastique. Étirez-la alors davantage et repliez-la en 3.
+4. Si elle casse trop vite, aidez-la avec les doigts pour allonger.
+5. Après 5 minutes, entre les étirements, jetez- la fort 4-5 fois sur le plan de travail pour lisser tout le tour.
+6. La pâte est assez pétrie quand, devenue assez élastique, elle ne colle plus du tout aux doigts. 7. Mettez-la pâte en forme.
+Sur une plaque de cuisson farinée, étirez la pâte avec les doigts, donnez-lui une épaisseur régulière.
+Pincez le tour en réduisant légèrement le diamètre, de façon à former un petit bourrelet.
+Laissez la pâte gonfler environ 30 minutes au tiède. Badigeonnez-la d''huile d''olive avant de garnir.
+Pomponnez-la:
+-corsez la pâte en y mêlant 1 trait de tabasco. Parfumez-la avec une cuillère à café d''origan sec, du thym frais, d''estragon haché ou une cuillère à soupe de tapenade.
+Teintez-la en rose en mêlant à l''eau une cuillère à café de concentre de tomate, en jaune avec une cuillère à café de pâte de curry...
+Si vous êtes perfectionniste, repliez la pâte, une fois pétrie, en 3 sue elle-même sans serrer, laissez-la doubler de volume au tiède (de 30 minutes à 1 heure), puis ré pétrissez très légèrement, étalez.
+Faites-la lever une seconde fois sur la plaque comme indiqué. Le résultat sera encore plus léger! Si vous la préparer la veille, mettez la pâte en boule des la fin du pétrissage , entourez-la de fiilm plastique ou d''aluminium sans serrer pour l''empêcher de sécher, gardez-la 2-3 jours au frigo dans la pétrie la plus froide.
+Si vous voulez la congeler, mettez la pâte en boule à la fin du pétrissage, emballez-la serré, gardez-la 3 mois au congélateur. 
+Décongelez à température ambiante, faites-la lever.
+Pour bien la cuire:
+-préchauffer le four à 210°c. Étalez sur une plaque métallique qui chauffe vite et fort.(plaque à pizza percé ou plaque anti adhésive.
+Garnissez la pizza en étalant d''abord l''huile d''olive puis le coulis de tomate, les herbes et enfin le saucisson, chorizos, thon, saumon fumé, câpres, champignons, coeurs de palmiers et les fromages( emmental, mozzarella).');
